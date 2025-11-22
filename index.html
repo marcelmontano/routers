@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetHabana | Energía y Conectividad</title>
+    <meta name="description" content="Estaciones de Energía Q7 y Mini UPS para Nauta Hogar en La Habana. Soluciones contra apagones.">
+    <meta name="theme-color" content="#0f172a">
+    
+    <!-- Scripts Externos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        tech: { blue: '#3b82f6', dark: '#0f172a', accent: '#fbbf24', gold: '#d97706' } 
+                    },
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        display: ['Rajdhani', 'sans-serif'] 
+                    },
+                    animation: { 
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 80%); }
+        
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: var(--hover-color, #3b82f6);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--hover-glow, rgba(59, 130, 246, 0.2));
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+
+        /* Inputs */
+        input, select {
+            background-color: #1e293b; border: 1px solid #334155; color: white;
+        }
+        input:focus, select:focus {
+            outline: none; border-color: #fbbf24; box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+        }
+
+        /* Badges */
+        .badge-blue { @apply bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-1 rounded text-xs font-bold; }
+        .badge-gold { @apply bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-1 rounded text-xs font-bold; }
+    </style>
+</head>
+<body class="antialiased pb-24 md:pb-0">
+
+    <!-- Sticky Mobile CTA -->
+    <div class="fixed bottom-0 left-0 w-full bg-[#0f172a]/95 backdrop-blur border-t border-yellow-500/30 p-3 z-50 md:hidden flex justify-between items-center shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+        <div class="flex flex-col">
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider">¿Necesitas Energía?</span>
+            <span class="text-sm font-bold text-yellow-400 font-display">Equipos desde $35</span>
+        </div>
+        <button onclick="scrollToOrder()" class="bg-[#25D366] text-white px-5 py-2 rounded-lg font-bold text-sm flex items-center shadow-lg animate-pulse-fast">
+            <i class="fab fa-whatsapp mr-2 text-lg"></i> Ordenar
+        </button>
+    </div>
+
+    <!-- WhatsApp Desktop -->
+    <a href="https://wa.me/5358183649" target="_blank" class="fixed bottom-6 right-6 z-50 hidden md:flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full text-white text-3xl shadow-2xl hover:bg-[#20ba5a] transition hover:scale-110">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 glass-panel border-b-0 top-0">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-bolt text-yellow-500 text-2xl"></i>
+                    <span class="text-xl font-display font-bold text-white tracking-wider">NET<span class="text-blue-500">HABANA</span></span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#conectividad" class="text-gray-300 hover:text-blue-400 text-sm font-bold uppercase tracking-widest transition">Internet</a>
+                    <a href="#energia" class="text-gray-300 hover:text-yellow-400 text-sm font-bold uppercase tracking-widest transition">Energía</a>
+                    <a href="#pedido" class="bg-yellow-600 hover:bg-yellow-500 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest transition">Comprar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[80vh] flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
+        <!-- Gradient Background -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-blue-900/20 via-transparent to-[#0f172a]"></div>
+        
+        <div class="relative z-10 max-w-5xl mx-auto px-4 text-center">
+            <div class="inline-flex items-center gap-2 mb-6 px-4 py-1 rounded-full border border-yellow-500/30 bg-yellow-900/20 backdrop-blur-md">
+                <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+                <span class="text-yellow-200 text-xs font-bold tracking-wider uppercase">Nuevos Equipos Disponibles</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-7xl font-bold mb-6 text-white leading-tight font-display">
+                Energía y Conectividad<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-yellow-400">SIN LÍMITES</span>
+            </h1>
+            
+            <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Desde mantener tu <strong>Router Nauta</strong> encendido hasta alimentar <strong>ventiladores y TVs</strong>. Tenemos la solución exacta para enfrentar los apagones en La Habana.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center px-4">
+                <a href="#energia" class="px-8 py-4 bg-gradient-to-r from-yellow-600 to-yellow-500 text-white font-bold rounded-xl hover:shadow-[0_0_30px_rgba(234,179,8,0.4)] transition transform hover:scale-105 flex items-center justify-center">
+                    <i class="fas fa-battery-full mr-2"></i> Ver Estaciones Q7
+                </a>
+                <a href="#conectividad" class="px-8 py-4 glass-panel text-white font-bold rounded-xl hover:bg-white/5 transition flex items-center justify-center border border-white/10">
+                    <i class="fas fa-wifi mr-2"></i> Kit Internet ($70)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 1: CONECTIVIDAD (Router + UPS) -->
+    <section id="conectividad" class="py-16 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-white font-display mb-8 flex items-center">
+                <i class="fas fa-wifi text-blue-500 mr-3"></i> Zona Conectividad
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- UPS -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col relative" style="--hover-color: #3b82f6;">
+                    <div class="h-40 flex items-center justify-center mb-4">
+                        <img src="https://i.imgur.com/ebcKcAO.png" class="h-full object-contain drop-shadow-lg" alt="UPS">
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Mini UPS KP3</h3>
+                    <p class="text-gray-400 text-xs mb-4">10,000 mAh | Router + Móvil</p>
+                    <div class="mt-auto flex justify-between items-center border-t border-gray-700 pt-4">
+                        <span class="text-2xl font-bold text-blue-400">$35</span>
+                        <button onclick="selectProduct('ups')" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white px-3 py-1 rounded transition text-sm">Agregar</button>
+                    </div>
+                </div>
+
+                <!-- COMBO -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col relative border-blue-500/40 bg-blue-900/10 md:-translate-y-4 shadow-lg shadow-blue-900/20" style="--hover-color: #60a5fa;">
+                    <div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl">MÁS VENDIDO</div>
+                    <div class="h-40 flex items-center justify-center gap-2 mb-4">
+                        <img src="https://i.imgur.com/ebcKcAO.png" class="h-20 object-contain" alt="UPS">
+                        <span class="text-white font-bold">+</span>
+                        <img src="https://i.imgur.com/20W4ND3.png" class="h-24 object-contain" alt="Router">
+                    </div>
+                    <h3 class="text-xl font-bold text-white text-center">Combo Blindado</h3>
+                    <p class="text-gray-400 text-xs text-center mb-4">Internet 24/7 Garantizado</p>
+                    <div class="mt-auto text-center border-t border-gray-700 pt-4">
+                        <div class="flex justify-center items-baseline gap-2 mb-2">
+                            <span class="text-gray-500 line-through text-sm">$75</span>
+                            <span class="text-3xl font-bold text-blue-400">$70</span>
+                        </div>
+                        <button onclick="selectProduct('combo')" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded transition">¡Lo Quiero!</button>
+                    </div>
+                </div>
+
+                <!-- ROUTER -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col relative" style="--hover-color: #3b82f6;">
+                    <div class="h-40 flex items-center justify-center mb-4">
+                        <img src="https://i.imgur.com/20W4ND3.png" class="h-full object-contain drop-shadow-lg" alt="Router">
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Router TP-Link</h3>
+                    <p class="text-gray-400 text-xs mb-4">300 Mbps | 4 Puertos</p>
+                    <div class="mt-auto flex justify-between items-center border-t border-gray-700 pt-4">
+                        <span class="text-2xl font-bold text-blue-400">$40</span>
+                        <button onclick="selectProduct('router')" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white px-3 py-1 rounded transition text-sm">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: ENERGÍA (Q7 Stations) -->
+    <section id="energia" class="py-16 relative bg-[#0b1120] border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-white font-display flex items-center">
+                        <i class="fas fa-bolt text-yellow-500 mr-3"></i> Estaciones de Energía
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-2">Respaldo potente para laptops, ventiladores y TVs.</p>
+                </div>
+                <span class="bg-yellow-900/30 text-yellow-400 text-xs font-bold px-3 py-1 rounded border border-yellow-500/20 mt-4 md:mt-0">
+                    Carga Solar Compatible ☀️
+                </span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Q7 ADVANCE 500 -->
+                <div class="glass-card rounded-2xl p-0 overflow-hidden flex flex-col" style="--hover-color: #fbbf24; --hover-glow: rgba(251, 191, 36, 0.2);">
+                    <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-8 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-yellow-500/5 blur-xl"></div>
+                        <img src="https://i.imgur.com/9uorOXp.png" class="h-56 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] hover:scale-105 transition duration-500 relative z-10" alt="Q7 500">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold text-white font-display">Q7 Advance 500</h3>
+                            <span class="badge-gold">346Wh</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">La opción versátil. Ideal para trabajar desde casa o emergencias.</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 text-xs text-gray-300 mb-6">
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-laptop mr-2 text-yellow-500"></i> Laptop + Móvil</div>
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-fan mr-2 text-yellow-500"></i> Ventilador</div>
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-lightbulb mr-2 text-yellow-500"></i> Luces LED</div>
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-plug mr-2 text-yellow-500"></i> 500W Salida</div>
+                        </div>
+
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-gray-700">
+                            <div>
+                                <span class="block text-xs text-gray-500 line-through">$350</span>
+                                <span class="text-3xl font-bold text-yellow-400">$300</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openModal('q7-500')" class="px-3 py-2 text-gray-400 hover:text-white text-xs underline">Detalles</button>
+                                <button onclick="selectProduct('q7-500')" class="bg-yellow-600 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg font-bold transition shadow-lg shadow-yellow-900/20">Comprar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q7 ADVANCE 1000 -->
+                <div class="glass-card rounded-2xl p-0 overflow-hidden flex flex-col border-yellow-500/30" style="--hover-color: #fbbf24; --hover-glow: rgba(251, 191, 36, 0.2);">
+                    <div class="relative">
+                        <div class="absolute top-0 right-0 bg-yellow-500 text-black text-xs font-bold px-4 py-1 rounded-bl-xl z-20">ALTO RENDIMIENTO</div>
+                        <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-8 flex items-center justify-center relative">
+                            <div class="absolute inset-0 bg-yellow-500/10 blur-xl"></div>
+                            <img src="https://i.imgur.com/LLTOFUO.png" class="h-56 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] hover:scale-105 transition duration-500 relative z-10" alt="Q7 1000">
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold text-white font-display">Q7 Advance 1000</h3>
+                            <span class="badge-gold">808Wh</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">Potencia bruta. Soporta TV, herramientas y electrodomésticos pequeños.</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 text-xs text-gray-300 mb-6">
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-tv mr-2 text-yellow-500"></i> TV 32"</div>
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-snowflake mr-2 text-yellow-500"></i> Mini Refri</div>
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-charging-station mr-2 text-yellow-500"></i> Carga Rápida</div>
+                            <div class="bg-gray-800 p-2 rounded"><i class="fas fa-plug mr-2 text-yellow-500"></i> 1000W Salida</div>
+                        </div>
+
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-gray-700">
+                            <div>
+                                <span class="block text-xs text-gray-500 line-through">$600</span>
+                                <span class="text-3xl font-bold text-yellow-400">$550</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openModal('q7-1000')" class="px-3 py-2 text-gray-400 hover:text-white text-xs underline">Detalles</button>
+                                <button onclick="selectProduct('q7-1000')" class="bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-white px-4 py-2 rounded-lg font-bold transition shadow-lg">Comprar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO -->
+    <section id="pedido" class="py-16 relative">
+        <div class="max-w-2xl mx-auto px-4">
+            <div class="glass-panel rounded-2xl p-8 shadow-2xl border-t-4 border-blue-500">
+                <h2 class="text-2xl font-bold text-center text-white mb-6 font-display">🚀 Finalizar Compra</h2>
+                
+                <form id="orderForm" class="space-y-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase font-bold mb-1">Producto Seleccionado</label>
+                        <select id="productSelect" class="w-full p-3 rounded-lg font-bold text-white border-gray-600 focus:border-yellow-500">
+                            <optgroup label="Conectividad">
+                                <option value="combo">🔥 Combo Blindado (Router+UPS) - $70</option>
+                                <option value="ups">Mini UPS KP3 - $35</option>
+                                <option value="router">Router TP-Link - $40</option>
+                            </optgroup>
+                            <optgroup label="Energía Avanzada">
+                                <option value="q7-500">⚡ Q7 Advance 500 (346Wh) - $300</option>
+                                <option value="q7-1000">⚡ Q7 Advance 1000 (808Wh) - $550</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 uppercase font-bold mb-1">Nombre</label>
+                            <input type="text" id="nombre" placeholder="Tu nombre" class="w-full p-3 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 uppercase font-bold mb-1">Teléfono</label>
+                            <input type="tel" id="telefono" placeholder="5xxx xxxx" class="w-full p-3 rounded-lg">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase font-bold mb-1">Municipio / Dirección</label>
+                        <input type="text" id="direccion" placeholder="Ej: Vedado, Calle 23..." class="w-full p-3 rounded-lg">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 uppercase font-bold mb-1">Entrega</label>
+                            <select id="entrega" class="w-full p-3 rounded-lg text-sm">
+                                <option value="domicilio">🛵 Mensajería ($1 USD)</option>
+                                <option value="recogida">📍 Recoger (Centro Habana)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 uppercase font-bold mb-1">Pago</label>
+                            <select id="pago" class="w-full p-3 rounded-lg text-sm">
+                                <option value="usd">💵 USD Efectivo</option>
+                                <option value="eur">💶 Euro (1x1)</option>
+                                <option value="cup">🇨🇺 CUP (Consultar)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="button" onclick="sendWhatsApp()" class="w-full py-4 bg-[#25D366] hover:bg-[#1da851] text-white font-bold rounded-lg shadow-[0_0_20px_rgba(37,211,102,0.4)] transition transform hover:scale-[1.02] flex items-center justify-center text-lg">
+                            <i class="fab fa-whatsapp mr-2 text-2xl"></i> Confirmar Pedido
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-10 border-t border-gray-800 text-center">
+        <p class="text-gray-600 text-xs">© 2024 NetHabana. Garantía de 30 días en todos los equipos.</p>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeModal()">
+        <div id="modalContent" class="bg-[#1e293b] w-full max-w-md rounded-2xl border border-gray-700 shadow-2xl transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="p-5 border-b border-gray-700 flex justify-between items-center sticky top-0 bg-[#1e293b] z-10">
+                <h3 id="modalTitle" class="text-xl font-bold text-white font-display">Detalles</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div id="modalBody" class="p-6 space-y-3 text-sm text-gray-300"></div>
+            <div class="p-5 bg-[#0f172a] rounded-b-2xl sticky bottom-0">
+                <button onclick="closeModal(); scrollToOrder()" class="w-full py-3 bg-yellow-600 text-white font-bold rounded-lg">¡Me interesa!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data de productos
+        const products = {
+            'combo': { name: 'Combo Blindado', price: 70 },
+            'ups': { name: 'Mini UPS KP3', price: 35 },
+            'router': { name: 'Router TP-Link', price: 40 },
+            'q7-500': { name: 'Q7 Advance 500', price: 300 },
+            'q7-1000': { name: 'Q7 Advance 1000', price: 550 }
+        };
+
+        // Data de Specs para Modales
+        const specs = {
+            'ups': `
+                <ul class="space-y-2">
+                    <li>🔋 <strong>Batería:</strong> 10,000 mAh</li>
+                    <li>⚡ <strong>Salidas:</strong> 5V, 9V, 12V</li>
+                    <li>🔌 <strong>Uso:</strong> Router, ONU, Carga de Móvil</li>
+                    <li>✅ <strong>Garantía:</strong> 30 días</li>
+                </ul>`,
+            'router': `
+                <ul class="space-y-2">
+                    <li>📡 <strong>Velocidad:</strong> 300 Mbps (WiFi N)</li>
+                    <li>🔌 <strong>Puertos:</strong> 4 LAN + 1 ADSL</li>
+                    <li>📶 <strong>Antenas:</strong> 2 de Alta Ganancia</li>
+                    <li>✅ <strong>Ideal:</strong> Nauta Hogar</li>
+                </ul>`,
+            'q7-500': `
+                <div class="space-y-3">
+                    <div class="bg-yellow-900/20 p-2 rounded border border-yellow-500/20 text-yellow-200 text-center font-bold">
+                        346Wh Capacidad | 500W Salida
+                    </div>
+                    <ul class="list-disc pl-4 space-y-1 text-gray-400">
+                        <li><strong>Salida AC:</strong> 1x 220V (500W Nom / 1000W Pico)</li>
+                        <li><strong>Puertos USB:</strong> 3x USB-A + 1x USB-C (60W PD)</li>
+                        <li><strong>Carga Solar:</strong> Entrada DC 12-28V</li>
+                        <li><strong>Extras:</strong> Cargador inalámbrico 10W, Linterna LED</li>
+                        <li><strong>Peso:</strong> 10 lbs (Portátil)</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 italic">Ideal para: Laptop, Ventilador, Router, Luces.</p>
+                </div>`,
+            'q7-1000': `
+                <div class="space-y-3">
+                    <div class="bg-yellow-900/20 p-2 rounded border border-yellow-500/20 text-yellow-200 text-center font-bold">
+                        808Wh Capacidad | 1000W Salida
+                    </div>
+                    <ul class="list-disc pl-4 space-y-1 text-gray-400">
+                        <li><strong>Salida AC:</strong> 2x Tomas (1000W Nom / 2000W Pico)</li>
+                        <li><strong>Puertos USB:</strong> Múltiples salidas rápidas</li>
+                        <li><strong>Carga Solar:</strong> Entrada DC 12-28V (150W Max)</li>
+                        <li><strong>Seguridad:</strong> Protección sobrecarga/calor</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 italic">Soporta: TV 32", Mini Refrigerador, Herramientas pequeñas.</p>
+                </div>`
+        };
+
+        function scrollToOrder() {
+            document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectProduct(id) {
+            const sel = document.getElementById('productSelect');
+            sel.value = id;
+            scrollToOrder();
+            sel.classList.add('ring-2', 'ring-yellow-500');
+            setTimeout(() => sel.classList.remove('ring-2', 'ring-yellow-500'), 1000);
+        }
+
+        function openModal(id) {
+            const titleMap = {
+                'ups': 'Mini UPS KP3', 'router': 'Router TP-Link',
+                'q7-500': 'Q7 Advance 500', 'q7-1000': 'Q7 Advance 1000'
+            };
+            document.getElementById('modalTitle').innerText = titleMap[id];
+            document.getElementById('modalBody').innerHTML = specs[id];
+            const el = document.getElementById('modalOverlay');
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.remove('opacity-0'), 10);
+        }
+
+        function closeModal() {
+            const el = document.getElementById('modalOverlay');
+            el.classList.add('opacity-0');
+            setTimeout(() => el.classList.add('hidden'), 300);
+        }
+
+        function sendWhatsApp() {
+            const id = document.getElementById('productSelect').value;
+            const prod = products[id];
+            const nombre = document.getElementById('nombre').value;
+            const dir = document.getElementById('direccion').value;
+            const tel = document.getElementById('telefono').value;
+            const entrega = document.getElementById('entrega').value;
+            const pago = document.getElementById('pago').value;
+
+            if(!nombre || !dir) {
+                alert("Por favor completa tu nombre y dirección.");
+                return;
+            }
+
+            let msg = `👋 Hola, me interesa: *${prod.name}* ($${prod.price})\n\n`;
+            msg += `👤 *Cliente:* ${nombre}\n`;
+            msg += `📱 *Tel:* ${tel}\n`;
+            msg += `📍 *Dirección:* ${dir}\n`;
+            msg += `🚚 *Entrega:* ${entrega === 'domicilio' ? 'A Domicilio ($1)' : 'Recogida'}\n`;
+            msg += `💰 *Pago:* ${pago.toUpperCase()}\n`;
+            
+            window.location.href = `https://wa.me/5358183649?text=${encodeURIComponent(msg)}`;
+        }
+    </script>
+</body>
+</html>
